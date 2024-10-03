@@ -19,3 +19,23 @@ This project is a backend API for the **Natours** tour booking application, prov
 - **Mongoose**: Elegant MongoDB object modeling for Node.js.
 - **JWT**: Secure authentication with JSON Web Tokens.
 - **Bcrypt**: Secure password hashing.
+
+## Installation
+
+1. Clone the repository:
+   git clone https://github.com/Haleem200/natours-api.git
+
+2. Install Dependencies: Make sure you have Node.js and MongoDB installed on your machine.
+   npm install
+
+3. 3- Set Up the Environment Variables: Create a .env file in the root directory and configure the following variables:
+   NODE_ENV=development
+   PORT=3000
+   DATABASE=mongodb://localhost:27017/natours
+   JWT_SECRET=your_jwt_secret
+   JWT_EXPIRES_IN=90d
+   STRIPTE_SECRET_KEY=your_stripe_secret_key
+
+4. Start the development server:
+   npm start
+   The server will run on http://localhost:3000.
