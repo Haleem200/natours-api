@@ -20,22 +20,37 @@ This project is a backend API for the **Natours** tour booking application, prov
 - **JWT**: Secure authentication with JSON Web Tokens.
 - **Bcrypt**: Secure password hashing.
 
-## Installation
+# Installation
 
-1. Clone the repository:
-   git clone https://github.com/Haleem200/natours-api.git
+1. **Clone the repository**:
+2. ```bash
+   `git clone https://github.com/Haleem200/natours-api.git`
 
-2. Install Dependencies: Make sure you have Node.js and MongoDB installed on your machine.
-   npm install
+3. **Install Dependencies**:  
+   Make sure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine. Then navigate into your project directory and run:
 
-3. 3- Set Up the Environment Variables: Create a .env file in the root directory and configure the following variables:
-   NODE_ENV=development
-   PORT=3000
-   DATABASE=mongodb://localhost:27017/natours
-   JWT_SECRET=your_jwt_secret
-   JWT_EXPIRES_IN=90d
-   STRIPTE_SECRET_KEY=your_stripe_secret_key
+   ```bash
+   `npm install`
 
-4. Start the development server:
-   npm start
-   The server will run on http://localhost:3000.
+5. **Set Up the Environment Variables**:  
+   Create a `.env` file in the root directory and configure the following variables:
+   
+   **NODE_ENV**=development
+   
+   **PORT**=3000
+   
+   **DATABASE**=mongodb://localhost:27017/natours
+   
+   **JWT_SECRET**=your_jwt_secret
+   
+   **JWT_EXPIRES_IN**=90d
+   
+   **STRIPTE_SECRET_KEY**=your_stripe_secret_key
+
+6. **Start the development server**:  
+   Run the following command to start the server:
+
+   ```bash
+   `npm start`  
+ The server will run on [http://localhost:3000](http://localhost:3000).
+
