@@ -1,0 +1,52 @@
+const express = require('express');
+const tourController = require('./../controllers/tour-controllers');
+const authController = require('./../controllers/auth-controller');
+const reviewRouter = require('./review-routes');
+
+const router = express.Router();
+
+router.use('/:tourId/reviews', reviewRouter);
+
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
+
+router
+  .route('/monthly-plan/:year')
+  .get(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide', 'guide'),
+    tourController.yearStats
+  );
+
+router.route('/tour-stats').get(tourController.getTourStats);
+
+router
+  .route('/')
+  .get(tourController.getAllTours)
+
+  .post(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    tourController.createTour
+  );
+
+router
+  .route('/:id')
+  .get(tourController.getTour)
+
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    tourController.uploadTourImages,
+    tourController.resizeTourImages,
+    tourController.updateTour
+  )
+
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    tourController.deleteTour
+  );
+
+module.exports = router;
