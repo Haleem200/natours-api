@@ -1,56 +1,265 @@
-# Natours API - Backend
+# Natours API 🌍
 
-This project is a backend API for the **Natours** tour booking application, providing users with the ability to view, book, and manage tours. It is built using modern Node.js practices with Express and MongoDB, ensuring scalability, security, and performance.
+A comprehensive RESTful API for a tour booking platform built with Node.js, Express, and MongoDB. This backend application provides secure authentication, tour management, booking functionality, and payment processing capabilities.
 
-## Features
+## 🚀 Features
 
-- **User Authentication and Authorization:** Sign up, log in, password reset, and role-based access control.
-- **Tour Management:** Add, update, delete, and view tours.
-- **User Management:** Update user details, deactivate accounts.
-- **Booking Management:** Book tours, process payments (if integrated), and manage booking history.
-- **Advanced Filtering, Sorting, and Pagination:** Query functionality for listing tours based on specific criteria.
-- **Data Validation and Error Handling:** Robust validation using tools like `express-validator` and custom error handling.
+### Core Functionality
+- **User Authentication & Authorization**
+  - User registration and login with JWT tokens
+  - Password reset functionality via email
+  - Role-based access control (user, guide, lead-guide, admin)
+  - Secure password hashing with bcrypt
 
-## Tech Stack
+- **Tour Management**
+  - CRUD operations for tours
+  - Advanced filtering, sorting, and pagination
+  - Geospatial data support for tour locations
+  - Image upload and processing for tour photos
+  - Tour statistics and analytics
 
-- **Node.js**: JavaScript runtime environment.
-- **Express.js**: Fast and minimalist web framework for Node.js.
-- **MongoDB**: NoSQL database for storing tour, user, and booking information.
-- **Mongoose**: Elegant MongoDB object modeling for Node.js.
-- **JWT**: Secure authentication with JSON Web Tokens.
-- **Bcrypt**: Secure password hashing.
+- **Booking System**
+  - Secure payment processing with Stripe
+  - Booking management and history
+  - Tour availability tracking
 
-# Installation
+- **Review System**
+  - User reviews and ratings for tours
+  - Automatic calculation of average ratings
+  - Review management with proper authorization
 
-1. **Clone the repository**:
-2. ```bash
-   `git clone https://github.com/Haleem200/natours-api.git`
+- **User Management**
+  - User profile management
+  - Photo upload and processing
+  - Account deactivation
+  - Admin user management
 
-3. **Install Dependencies**:  
-   Make sure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine. Then navigate into your project directory and run:
+### Security Features
+- **Rate Limiting** - Prevents API abuse
+- **Data Sanitization** - Protection against NoSQL injection attacks
+- **XSS Protection** - Prevents cross-site scripting attacks
+- **HTTP Security Headers** - Enhanced security with Helmet.js
+- **Parameter Pollution Prevention** - HPP middleware protection
 
+## 🛠️ Tech Stack
+
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JSON Web Tokens (JWT)
+- **Password Hashing**: bcrypt
+- **Image Processing**: Sharp
+- **Payment Processing**: Stripe
+- **Email Service**: Nodemailer
+- **Security**: Helmet, express-rate-limit, express-mongo-sanitize, xss-clean, hpp
+
+## 📋 Prerequisites
+
+Before running this application, make sure you have the following installed:
+- Node.js (v14 or higher)
+- MongoDB (local installation or cloud service)
+- npm or yarn package manager
+
+## 🔧 Installation & Setup
+
+1. **Clone the repository**
    ```bash
-   `npm install`
+   git clone https://github.com/your-username/natours-api.git
+   cd natours-api
+   ```
 
-5. **Set Up the Environment Variables**:  
-   Create a `.env` file in the root directory and configure the following variables:
-   
-   **NODE_ENV**=development
-   
-   **PORT**=3000
-   
-   **DATABASE**=mongodb://localhost:27017/natours
-   
-   **JWT_SECRET**=your_jwt_secret
-   
-   **JWT_EXPIRES_IN**=90d
-   
-   **STRIPTE_SECRET_KEY**=your_stripe_secret_key
-
-6. **Start the development server**:  
-   Run the following command to start the server:
-
+2. **Install dependencies**
    ```bash
-   `npm start`  
- The server will run on [http://localhost:3000](http://localhost:3000).
+   npm install
+   ```
 
+3. **Create environment variables**
+   
+   Create a `config.env` file in the root directory with the following variables:
+   ```env
+   NODE_ENV=development
+   PORT=3000
+   
+   # Database
+   DATABASE=mongodb://localhost:27017/natours
+   DATABASE_PASSWORD=your_database_password
+   
+   # JWT
+   JWT_SECRET=your-super-secure-jwt-secret-key
+   JWT_EXPIRES_IN=90d
+   JWT_COOKIE_EXPIRES_IN=90
+   
+   # Email Configuration (for password reset)
+   EMAIL_HOST=your-email-host
+   EMAIL_PORT=587
+   EMAIL_USERNAME=your-email-username
+   EMAIL_PASSWORD=your-email-password
+   
+   # Stripe (for payments)
+   STRIPE_SECRET_KEY=your-stripe-secret-key
+   ```
+
+4. **Start the application**
+   ```bash
+   # Development mode
+   npm start
+   
+   # Production mode
+   npm run start:prod
+   ```
+
+The API will be available at `http://localhost:3000`
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:3000/api/v1
+```
+
+### Authentication Endpoints
+- `POST /users/signup` - User registration
+- `POST /users/signin` - User login
+- `POST /users/forgotPassword` - Request password reset
+- `PATCH /users/resetPassword/:token` - Reset password with token
+
+### Tour Endpoints
+- `GET /tours` - Get all tours (with filtering, sorting, pagination)
+- `GET /tours/:id` - Get single tour
+- `POST /tours` - Create new tour (admin/lead-guide only)
+- `PATCH /tours/:id` - Update tour (admin/lead-guide only)
+- `DELETE /tours/:id` - Delete tour (admin/lead-guide only)
+- `GET /tours/top-5-cheap` - Get top 5 cheapest tours
+- `GET /tours/tour-stats` - Get tour statistics
+- `GET /tours/monthly-plan/:year` - Get monthly tour plan
+
+### User Endpoints
+- `GET /users/me` - Get current user data
+- `PATCH /users/updateMe` - Update current user data
+- `DELETE /users/deleteMe` - Deactivate current user account
+- `PATCH /users/update-my-password` - Update current user password
+
+### Review Endpoints
+- `GET /tours/:tourId/reviews` - Get all reviews for a tour
+- `POST /tours/:tourId/reviews` - Create review for a tour
+- `GET /reviews/:id` - Get single review
+- `PATCH /reviews/:id` - Update review
+- `DELETE /reviews/:id` - Delete review
+
+### Booking Endpoints
+- `GET /bookings/checkout-session/:tourId` - Get Stripe checkout session
+- `GET /bookings` - Get all bookings (admin only)
+- `POST /bookings` - Create booking (admin only)
+- `GET /bookings/:id` - Get single booking
+- `PATCH /bookings/:id` - Update booking
+- `DELETE /bookings/:id` - Delete booking
+
+## 🔍 Query Features
+
+The API supports advanced querying capabilities:
+
+### Filtering
+```
+GET /api/v1/tours?difficulty=easy&price[lte]=1500
+```
+
+### Sorting
+```
+GET /api/v1/tours?sort=-ratingsAverage,price
+```
+
+### Field Limiting
+```
+GET /api/v1/tours?fields=name,duration,difficulty,price
+```
+
+### Pagination
+```
+GET /api/v1/tours?page=2&limit=10
+```
+
+## 🏗️ Project Structure
+
+```
+natours-api/
+├── controllers/          # Route handlers
+│   ├── auth-controller.js
+│   ├── booking-controller.js
+│   ├── error-controller.js
+│   ├── review-controller.js
+│   ├── tour-controllers.js
+│   └── user-controllers.js
+├── models/              # Database models
+│   ├── booking-model.js
+│   ├── review-model.js
+│   ├── tour-model.js
+│   └── user-model.js
+├── routes/              # Route definitions
+│   ├── booking-routes.js
+│   ├── review-routes.js
+│   ├── tour-routes.js
+│   └── user-routes.js
+├── utils/               # Utility functions
+│   ├── APIFeatures.js
+│   ├── appError.js
+│   ├── catchAsync.js
+│   └── email.js
+├── app.js              # Express app configuration
+├── server.js           # Server startup
+└── package.json        # Dependencies and scripts
+```
+
+## 🧪 Testing
+
+You can test the API endpoints using tools like:
+- **Postman** - Import the provided collection
+- **cURL** - Command line testing
+- **Thunder Client** - VS Code extension
+
+Example cURL request:
+```bash
+curl -X GET http://localhost:3000/api/v1/tours \
+  -H "Content-Type: application/json"
+```
+
+## 🚀 Deployment
+
+### Environment Setup
+1. Set `NODE_ENV=production`
+2. Use a cloud MongoDB service (MongoDB Atlas)
+3. Configure production email service
+4. Set up proper environment variables on your hosting platform
+
+### Recommended Platforms
+- **Railway**
+- **Render**
+- **Heroku**
+- **DigitalOcean App Platform**
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built following modern Node.js best practices
+- Security implementations based on OWASP guidelines
+- RESTful API design principles
+
+## 📞 Contact
+
+For any questions or suggestions, please reach out:
+- Email: your-email@example.com
+- GitHub: [@your-username](https://github.com/your-username)
+
+---
+
+⭐ **Star this repository if you found it helpful!**
